@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Resume Reviewer</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your Resume</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload</button>
+        </form>
+
+        {% if review_feedback %}
+            <div class="review-container">
+                <div class="review-score">?/100</div>
+                <div class="review-text">
+                    <p>Your resume has been reviewed and scored!</p>
+                    <p>Here are some details:</p>
+                    <p>{{ review_feedback|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
