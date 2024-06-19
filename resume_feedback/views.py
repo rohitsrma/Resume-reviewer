@@ -50,7 +50,6 @@ def extract_pdf_text(file_path):
             text_content += page.get_text()
         pdf_file.close()
     except Exception as e:
-        print(f"Error extracting PDF content: {str(e)}")
         return None
     return text_content
 
@@ -61,7 +60,6 @@ def extract_docx_text(file_path):
         for paragraph in docx_document.paragraphs:
             text_content += paragraph.text + "\n"
     except Exception as e:
-        print(f"Error extracting DOCX content: {str(e)}")
         return None
     return text_content
 
@@ -140,7 +138,6 @@ def upload_pdf(request):
                 return Response({'error': 'Failed to generate review feedback'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response({'error': 'Failed to extract text from the PDF'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
