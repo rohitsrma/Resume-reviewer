@@ -30,8 +30,6 @@ def home(request):
                 text_content = extract_pdf_text(new_resume.resume_file.path)
             elif file_extension == 'docx':
                 text_content = extract_docx_text(new_resume.resume_file.path)
-            else:
-                text_content = "Unsupported file type"
 
             if text_content and text_content != "Unsupported file type":
                 review_feedback = review_resume(text_content)
