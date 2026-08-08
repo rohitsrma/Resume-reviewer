@@ -18,12 +18,16 @@ def home(request):
 
     if request.method == 'POST':
         form = ResumeForm(request.POST, request.FILES)
+
         if form.is_valid():
             uploaded_by = request.POST.get('uploaded_by')
             uploaded_file = request.FILES['resume_file']
-            file_extension = uploaded_file.name.split('.')[-1]
-            
-            new_resume = Resume(uploaded_by=uploaded_by, resume_file=uploaded_file)
+            file_extension = uploaded_file.name.split('.')[-1].lower()
+
+            new_resume = Resume(
+                uploaded_by=uploaded_by,
+                resume_file=uploaded_file
+            )
             new_resume.save()
 
             if file_extension == 'pdf':
@@ -33,14 +37,21 @@ def home(request):
             else:
                 text_content = "Unsupported file type"
 
-            if text_content and text_content != "Unsupported file type":
+            if text_content:
                 review_feedback = review_resume(text_content)
 
     else:
         form = ResumeForm()
 
-    return render(request, 'home.html', {'form': form, 'review_feedback': review_feedback})
-
+    return render(
+        request,
+        'home.html',
+        {
+            'form': form,
+            'review_feedback': review_feedback
+        }
+    )
+    
 def extract_pdf_text(file_path):
     text_content = ""
     try:
